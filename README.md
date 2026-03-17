@@ -1,6 +1,6 @@
 # Code Visualizer
 
-Ein interaktives Full-Stack-Tool zur Visualisierung von Java-Code-Strukturen. Das Programm parst Java-Quellcode und generiert daraus dynamische, interaktive Graphen (Klassen, Abhängigkeiten und Kontrollfluss). Ziel ist es, Entwicklern einen schnellen visuellen Überblick über Workflows in fremden Codebases zu geben.
+Ein interaktives Full-Stack-Tool zur Visualisierung von Code-Strukturen. Das Programm parst Quellcode und generiert daraus dynamische, interaktive Graphen (Klassen, Abhängigkeiten und Kontrollfluss). Ziel ist es, Entwicklern einen schnellen visuellen Überblick über Workflows in fremden Codebases zu geben.
 
 ## Tech-Stack
 
@@ -21,8 +21,8 @@ Da das Projekt aus einem separierten Backend und Frontend besteht, müssen für 
 
 ### 1. Repository klonen
 ```bash
-git clone https://github.com/DEIN_USERNAME/CODE_VISUALIZER_REPO.git
-cd CODE_VISUALIZER_REPO
+git clone https://github.com/DEIN_USERNAME/CodeVisualizer.git
+cd CodeVisualizer
 ```
 
 ### 2. Backend starten
