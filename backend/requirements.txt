@@ -1,1 +1,4 @@
-
+fastapi
+uvicorn[standard]
+tree-sitter
+tree-sitter-java
