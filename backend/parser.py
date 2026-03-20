@@ -18,7 +18,7 @@ def get_ast(java_code: str):
     return tree.root_node
 
 # --- Issue #6: Klassen extrahieren ---
-class_query = JAVA_LANGUAGE.Query("""
+class_query = JAVA_LANGUAGE.query("""
     (class_declaration
         name: (identifier) @class_name
     )
