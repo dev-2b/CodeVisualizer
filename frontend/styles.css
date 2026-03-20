@@ -1,0 +1,74 @@
+/* Grundlegende Resets */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+    height: 100vh;
+    /* Nimmt die volle Bildschirmhöhe ein */
+    overflow: hidden;
+    /* Verhindert Scrollbalken auf der Hauptebene */
+}
+
+/* Der Haupt-Container für den Split-Screen */
+.split-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+/* Linke und rechte Hälfte */
+.left-pane,
+.right-pane {
+    flex: 1;
+    /* Teilt den Platz gleichmäßig auf */
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.left-pane {
+    border-right: 2px solid #ccc;
+    background-color: #f4f4f4;
+}
+
+h2 {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* Die Container für Editor und Graph */
+#editor-container {
+    flex-grow: 1;
+    /* Füllt den gesamten verfügbaren Platz in der Höhe aus */
+    border: 1px solid #aaa;
+    background-color: #fff;
+    margin-bottom: 1rem;
+}
+
+#graph-container {
+    flex-grow: 1;
+    border: 1px solid #aaa;
+    background-color: #fff;
+}
+
+/* Der Button */
+#visualize-btn {
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+#visualize-btn:hover {
+    background-color: #0056b3;
+}
