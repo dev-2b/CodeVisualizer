@@ -15,32 +15,52 @@ def get_ast(java_code: str):
     den Root-Node des Abstract Syntax Tree zurück.
     """
     tree = parser.parse(bytes(java_code, "utf8"))
-    return tree.root_node
 
-# --- Issue #6: Klassen extrahieren ---
-class_query = JAVA_LANGUAGE.query("""
-    (class_declaration
-        name: (identifier) @class_name
-    )
-""")
+    # 1. Prüfen: Kommt der Code überhaupt im Backend an?
+    print("--- EMPFANGENER CODE ---")
+    print(java_code)
+    
+    tree = parser.parse(bytes(java_code, "utf8"))
+    
+    # 2. Prüfen: Wie sieht der von Tree-sitter gebaute Baum aus?
+    print("--- AST STRUKTUR ---")
+    print(tree.root_node)
+
+
+    return tree
 
 def extract_classes_to_visjs(root_node) -> dict:
-    """
-    Nimmt den Root-Node eines AST, durchsucht ihn nach Klassennamen
-    und gibt ein Dictionary im vis.js-Format zurück.
-    """
     nodes = []
     edges = []
     
-    captures = class_query.captures(root_node)
-    
-    if "class_name" in captures:
-        # captures["class_name"] ist eine Liste von Nodes
-        for node in captures["class_name"]:
-            class_name = node.text.decode('utf8')
-            nodes.append({
-                "id": class_name,
-                "label": class_name
-            })
+    print("--- STARTE EXTRAKTION ---")
 
+    # Initialisiere den offiziellen TreeCursor
+    cursor = root_node.walk()
+
+    def traverse(cursor):
+        node = cursor.node
+        
+        if node.type == "class_declaration":
+            name_node = node.child_by_field_name("name")
+            if name_node:
+                text = name_node.text
+                class_name = text.decode('utf8') if isinstance(text, bytes) else text
+                print(f"-> Klasse extrahiert: {class_name}")
+                
+                nodes.append({
+                    "id": class_name,
+                    "label": class_name
+                })
+        
+        # Rekursiver Durchlauf mit dem Cursor
+        if cursor.goto_first_child():
+            traverse(cursor)
+            while cursor.goto_next_sibling():
+                traverse(cursor)
+            cursor.goto_parent()
+
+    traverse(cursor)
+    
+    print("--- EXTRAKTION BEENDET, GEFUNDENE KNOTEN:", nodes, "---")
     return {"nodes": nodes, "edges": edges}

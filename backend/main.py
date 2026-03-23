@@ -26,12 +26,12 @@ class CodeRequest(BaseModel):
     code: str
 
 @app.post("/api/parse")
-def parse_java_code(request: CodeRequest):
+async def parse_java_code(request: CodeRequest):
     # 1. AST generieren (Issue #5 Logik nutzen)
-    root_node = get_ast(request.code)
+    tree = get_ast(request.code)
     
     # 2. Daten extrahieren und formatieren (Issue #6 Logik nutzen)
-    result = extract_classes_to_visjs(root_node)
+    result = extract_classes_to_visjs(tree.root_node)
     
     # 3. An das Frontend zurücksenden
     return result
