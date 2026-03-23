@@ -12,7 +12,7 @@ parser.language = JAVA_LANGUAGE
 def get_ast(java_code: str):
     """
     Nimmt Java-Quellcode als String, parst ihn und gibt 
-    den Root-Node des Abstract Syntax Tree zurück.
+    den Abstract Syntax Tree zurück.
     """
     tree = parser.parse(bytes(java_code, "utf8"))
 
