@@ -52,8 +52,14 @@ h2 {
 
 #graph-container {
     flex-grow: 1;
+    height: 100%;
+    /* Versucht, die volle Höhe des Eltern-Containers einzunehmen */
+    min-height: 400px;
+    /* WICHTIG: Stellt sicher, dass der Container immer mindestens 400px hoch ist */
     border: 1px solid #aaa;
     background-color: #fff;
+    position: relative;
+    /* Hilfreich für vis.js, um das Canvas korrekt zu positionieren */
 }
 
 /* Der Button */
