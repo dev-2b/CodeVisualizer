@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from models import ParseRequest
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 # Beide Funktionen aus der parser.py importieren
@@ -22,8 +23,6 @@ app.add_middleware(
 # def read_root():
 #     return {"status": "Das FastAPI Backend läuft erfolgreich!"}
 
-class CodeRequest(BaseModel):
-       code: str
 
 @app.post("/api/parse")
 async def parse_java_code(request: CodeRequest):
