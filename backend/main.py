@@ -17,13 +17,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Ein simpler Test-Endpunkt
-@app.get("/")
-def read_root():
-    return {"status": "Das FastAPI Backend läuft erfolgreich!"}
+# # Test-Endpunkt
+# @app.get("/")
+# def read_root():
+#     return {"status": "Das FastAPI Backend läuft erfolgreich!"}
 
 class CodeRequest(BaseModel):
-    code: str
+       code: str
 
 @app.post("/api/parse")
 async def parse_java_code(request: CodeRequest):
