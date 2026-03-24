@@ -78,3 +78,9 @@ h2 {
 #visualize-btn:hover {
     background-color: #0056b3;
 }
+
+.ast-highlight {
+    background-color: rgba(255, 215, 0, 0.4);
+    /* Ein transparentes Gelb */
+    border-radius: 3px;
+}

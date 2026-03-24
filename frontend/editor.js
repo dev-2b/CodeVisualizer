@@ -4,6 +4,10 @@ require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-e
 // Eine globale Variable, damit wir später den Code auslesen können
 let windowEditor;
 
+// Hier speicher wir die aktuellen Dekorationen, damit wir sie bei Bedarf entfernen können
+let currentDecorations = [];
+
+
 // Lade das Hauptmodul des Editors
 require(['vs/editor/editor.main'], function () {
 
@@ -127,7 +131,7 @@ function drawGraph(graphData) {
     // 4. Graph initialisieren
     const network = new vis.Network(container, data, options);
 
-    // --- NEU: Klick-Event für die Synchronisation ---
+    // --- Klick-Event für die Synchronisation ---
     network.on("click", function (params) {
         // Prüfen, ob wirklich ein Knoten (und nicht nur der leere Hintergrund) geklickt wurde
         if (params.nodes.length > 0) {
@@ -139,22 +143,30 @@ function drawGraph(graphData) {
             if (clickedNode && clickedNode.loc) {
                 const loc = clickedNode.loc;
 
-                // Monaco anweisen, den Bereich zu markieren
-                windowEditor.setSelection({
-                    startLineNumber: loc.startLineNumber,
-                    startColumn: loc.startColumn,
-                    endLineNumber: loc.endLineNumber,
-                    endColumn: loc.endColumn
-                });
-
-                // Optional, aber sehr nützlich: Scrollt den Editor automatisch 
-                // zu der markierten Stelle, falls sie gerade nicht im Bild ist
+                // 1. Optional, aber weicher: Zum Code scrollen
                 windowEditor.revealRangeInCenter({
                     startLineNumber: loc.startLineNumber,
                     startColumn: loc.startColumn,
                     endLineNumber: loc.endLineNumber,
                     endColumn: loc.endColumn
                 });
+
+                // 2. Die farbige Markierung (Decoration) setzen
+                // deltaDecorations löscht automatisch die alten Markierungen aus dem Array 
+                // und wendet die neuen an.
+                currentDecorations = windowEditor.deltaDecorations(currentDecorations, [
+                    {
+                        range: new monaco.Range(
+                            loc.startLineNumber,
+                            loc.startColumn,
+                            loc.endLineNumber,
+                            loc.endColumn
+                        ),
+                        options: {
+                            inlineClassName: 'ast-highlight' // Verweist auf dein CSS
+                        }
+                    }
+                ]);
             }
         }
     });
