@@ -1,0 +1,48 @@
+Todo-Liste für das Refactoring
+Gehe diese Liste schrittweise durch. Das Ziel ist es, nach jedem Hauptblock wieder einen lauffähigen Code zu haben, den du testen kannst.
+
+Phase 1: Datenmodelle (Backend)
+[x] Erstelle eine neue Datei models.py im Backend-Ordner.
+
+[x] Definiere dort die Pydantic-Klassen für den neuen JSON-Payload: Eine Klasse für die einzelne Datei (filename, code, language) und eine für den gesamten Request (visualization_type, files).
+
+[x] Lösche die alte Pydantic-Klasse aus der main.py und importiere stattdessen die neuen Modelle aus der models.py.
+
+Phase 2: Die neue Ordnerstruktur (Backend)
+[x] Erstelle den Ordner parsers im Backend.
+
+[ ] Erstelle darin die Unterordner java und python.
+
+[ ] Lege in parsers/, parsers/java/ und parsers/python/ jeweils eine leere Datei namens __init__.py an (damit Python die Ordner als Module erkennt).
+
+[ ] Erstelle die Datei parsers/java/ast.py.
+
+[ ] Verschiebe deine bisherige Extraktionslogik aus der alten parser.py (die Funktion extract_classes_to_visjs und die Tree-sitter Initialisierung) in diese neue ast.py.
+
+[ ] Lösche die alte parser.py im Hauptverzeichnis.
+
+Phase 3: Die Weiche / Factory
+[ ] Erstelle die Datei parsers/factory.py.
+
+[ ] Importiere dort die Logik aus parsers.java.ast.
+
+[ ] Schreibe eine Funktion get_visualisation(files, vis_type), die die Sprache der Dateien prüft und den Request an die entsprechende Sprach-Datei (aktuell nur Java -> ast) weiterleitet.
+
+Phase 4: API anpassen & Backend testen
+[ ] Passe den Endpunkt in der main.py an: Er soll jetzt nur noch den Request entgegennehmen und an factory.get_visualisation(...) übergeben.
+
+[ ] Testen: Starte das Backend. Öffne in deinem Browser http://localhost:8000/docs (die automatische Swagger-UI von FastAPI). Sende dort manuell einen Test-Request im neuen JSON-Format ab, um zu prüfen, ob die Factory den Baum weiterhin korrekt baut, ohne dass das Frontend dazwischenfunkt.
+
+Phase 5: Frontend Datenstruktur anpassen
+[ ] Gehe in die editor.js.
+
+[ ] Ändere den Body des fetch-Requests. Anstatt nur {"code": code} zu senden, baue exakt die Struktur zusammen, die dein Backend jetzt erwartet.
+
+[ ] Tipp für den Übergang: Hardcode (schreibe fest in den Code) vorerst die Werte für visualization_type: "ast" und language: "java", während du den dynamischen Code aus dem Editor holst.
+
+[ ] Testen: Klicke auf den Button. Die Visualisierung muss jetzt wieder genauso funktionieren wie vor dem Umbau.
+
+Phase 6: Frontend UI erweitern (Der Abschluss)
+[ ] Füge in der index.html (z.B. neben dem Button) ein Dropdown-Menü (<select>) für den Visualisierungs-Typ hinzu.
+
+[ ] Lese in der editor.js den ausgewählten Wert dieses Dropdowns aus, bevor der Request gesendet wird, und ersetze damit den hardcodierten visualization_type im JSON-Payload.

@@ -17,7 +17,16 @@
       <h2>Eingabe</h2>
       <div id="editor-container">
       </div>
-      <button id="visualize-btn">Code visualisieren</button>
+      <div id="controls">
+        <label for="vis-type">Ansicht: </label>
+        <select id="vis-type">
+          <option value="ast">Abstract Syntax Tree (Klassen)</option>
+          <option value="inheritance">Vererbung (Demnächst)</option>
+          <option value="dataflow">Datenfluss (Demnächst)</option>
+        </select>
+
+        <button id="visualize-btn">Code visualisieren</button>
+      </div>
     </div>
 
     <div class="right-pane">
