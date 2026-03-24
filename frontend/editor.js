@@ -48,7 +48,7 @@ document.getElementById('visualize-btn').addEventListener('click', async () => {
         console.log("4. Payload fertig zusammengebaut:", requestPayload);
 
         console.log("5. Starte Fetch-Anfrage an das Backend...");
-        const response = await fetch('http://127.0.0.1:8000/api/parse', {
+        const response = await fetch('http://localhost:8000/api/parse', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
