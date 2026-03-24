@@ -91,11 +91,35 @@ function drawGraph(graphData) {
     };
 
     const options = {
+        layout: {
+            hierarchical: {
+                enabled: true,
+                direction: 'UD',       // UD = Up-Down (von oben nach unten)
+                sortMethod: 'directed' // Beachtet die Richtung der Pfeile
+            }
+        },
+        physics: {
+            hierarchicalRepulsion: {
+                nodeDistance: 150      // Abstand zwischen den Knoten
+            }
+        },
         nodes: {
-            shape: 'box',
-            color: '#97C2FC',
+            shape: 'box',           // 'box', 'ellipse', 'circle', 'database' etc.
+            margin: 10,             // Innenabstand zum Text
             font: {
-                size: 16
+                face: 'monospace',  // Schriftart (gut für Code)
+                size: 14
+            },
+            color: {
+                background: '#D2E5FF',
+                border: '#2B7CE9'
+            }
+        },
+        edges: {
+            arrows: 'to',           // Pfeilspitze am Ende der Linie
+            color: '#848484',
+            smooth: {
+                type: 'cubicBezier' // Abgerundete Linienführung
             }
         }
     };
