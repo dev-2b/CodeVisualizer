@@ -2,14 +2,14 @@ Todo-Liste für das Refactoring
 Gehe diese Liste schrittweise durch. Das Ziel ist es, nach jedem Hauptblock wieder einen lauffähigen Code zu haben, den du testen kannst.
 
 Phase 1: Datenmodelle (Backend)
-[ ] Erstelle eine neue Datei models.py im Backend-Ordner.
+[x] Erstelle eine neue Datei models.py im Backend-Ordner.
 
-[ ] Definiere dort die Pydantic-Klassen für den neuen JSON-Payload: Eine Klasse für die einzelne Datei (filename, code, language) und eine für den gesamten Request (visualization_type, files).
+[x] Definiere dort die Pydantic-Klassen für den neuen JSON-Payload: Eine Klasse für die einzelne Datei (filename, code, language) und eine für den gesamten Request (visualization_type, files).
 
-[ ] Lösche die alte Pydantic-Klasse aus der main.py und importiere stattdessen die neuen Modelle aus der models.py.
+[x] Lösche die alte Pydantic-Klasse aus der main.py und importiere stattdessen die neuen Modelle aus der models.py.
 
 Phase 2: Die neue Ordnerstruktur (Backend)
-[ ] Erstelle den Ordner parsers im Backend.
+[x] Erstelle den Ordner parsers im Backend.
 
 [ ] Erstelle darin die Unterordner java und python.
 

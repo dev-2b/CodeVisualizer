@@ -24,34 +24,53 @@ require(['vs/editor/editor.main'], function () {
 
 // Event-Listener für den Button
 document.getElementById('visualize-btn').addEventListener('click', async () => {
-    // Sicherstellen, dass der Editor schon geladen ist
-    if (!windowEditor) return;
-
-    // 1. Code aus dem Editor holen
-    const code = windowEditor.getValue();
+    console.log("--- NEUER KLICK ---");
+    console.log("1. Button-Klick wurde registriert!");
 
     try {
-        // 2. Request an das Python-Backend senden
-        const response = await fetch('http://localhost:8000/api/parse', {
+        // HINWEIS: Falls deine Variable anders heißt (z.B. window.editor), passe das hier an!
+        const code = windowEditor.getValue();
+        console.log("2. Code erfolgreich ausgelesen. Länge:", code.length, "Zeichen");
+
+        const selectedVisType = document.getElementById('vis-type').value;
+        console.log("3. Visualisierungs-Typ aus Dropdown:", selectedVisType);
+
+        const requestPayload = {
+            visualization_type: selectedVisType,
+            files: [
+                {
+                    filename: "Main.java",
+                    code: code,
+                    language: "java"
+                }
+            ]
+        };
+        console.log("4. Payload fertig zusammengebaut:", requestPayload);
+
+        console.log("5. Starte Fetch-Anfrage an das Backend...");
+        const response = await fetch('http://127.0.0.1:8000/api/parse', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ code: code })
+            body: JSON.stringify(requestPayload)
         });
+
+        console.log("6. Antwort vom Server empfangen! HTTP Status:", response.status);
 
         if (!response.ok) {
             throw new Error(`HTTP-Fehler! Status: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log("7. JSON-Daten verarbeitet:", data);
 
-        // 3. Den Graphen mit den empfangenen Daten zeichnen
         drawGraph(data);
+        console.log("8. Graph erfolgreich gezeichnet!");
 
     } catch (error) {
-        console.error("Fehler bei der Kommunikation mit dem Backend:", error);
-        alert("Fehler: Konnte keine Daten abrufen. Läuft der FastAPI-Server auf Port 8000?");
+        // Das fängt JEDEN Fehler ab und zwingt ihn in die Konsole
+        console.error("!!! FEHLER ABGEFANGEN !!! ->", error);
     }
 });
 
