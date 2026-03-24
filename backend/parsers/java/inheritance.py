@@ -14,7 +14,7 @@ def extract(files: list) -> dict:
     nodes = []
     edges = []
 
-    # Iteriere über alle Dateien, die vom Frontend gesendet wurden
+    # Iteriere über alle Dateien
     for file_obj in files:
         tree = parser.parse(bytes(file_obj.code, "utf8"))
         cursor = tree.root_node.walk()
@@ -33,14 +33,14 @@ def extract(files: list) -> dict:
                         "label": class_name
                     })
             
-            # Rekursiver Durchlauf
+            # Rekursion (Tiefensuche)
             if cursor.goto_first_child():
                 traverse(cursor)
                 while cursor.goto_next_sibling():
                     traverse(cursor)
                 cursor.goto_parent()
 
-        # Starte die Traversierung für den aktuellen AST
+        # Starte die Traversierung
         traverse(cursor)
 
     return {"nodes": nodes, "edges": edges}

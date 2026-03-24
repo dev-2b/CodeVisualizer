@@ -16,9 +16,9 @@ def extract(files: list) -> dict:
         tree = parser.parse(bytes(file_obj.code, "utf8"))
         cursor = tree.root_node.walk()
 
-        # Wir übergeben jetzt die ID des Eltern-Knotens an die nächste Ebene
+        # Elternknoten-ID wmuss jetzt mit übergeben werden, damit die Kanten korrekt erstellt werden können
         def traverse(cursor, parent_id=None):
-            nonlocal node_counter  # Erlaubt den Zugriff auf den Zähler außerhalb der Funktion
+            nonlocal node_counter  # Erlaubt den Zugriff auf den Zähler außerhalb der Funktion --> Tipp von KI kannte ich nicht, aber es ist notwendig, damit die IDs eindeutig bleiben
             
             node = cursor.node
             current_id = node_counter
@@ -27,15 +27,13 @@ def extract(files: list) -> dict:
             # Das Label für vis.js zusammenbauen
             label = node.type
             
-            # Wenn der Knoten keine Kinder mehr hat (ein "Blatt" am Baum ist), 
-            # hängen wir den tatsächlichen Code-Text an das Label an
+            
             if node.child_count == 0:
                 text = node.text.decode('utf8')
                 # Verhindert, dass Zeilenumbrüche das Layout zerschießen
                 text = text.replace('\n', '\\n').replace('\r', '')
                 
-                # Wenn Typ und Text identisch sind (bei anonymen Knoten wie "{"), 
-                # zeigen wir es nicht doppelt an
+                # Wenn Typ und Text identisch sind (bei anonymen Knoten wie "{"), eigen wir es nicht doppelt an
                 if label != text:
                     label += f"\n({text})"
 
@@ -52,14 +50,14 @@ def extract(files: list) -> dict:
                     "to": current_id
                 })
             
-            # Rekursiver Durchlauf
+            # Rekursion (Tiefensuche) mit Übergabe der aktuellen Knoten-ID als Eltern-ID für die Kinder
             if cursor.goto_first_child():
                 traverse(cursor, current_id)  # Der aktuelle Knoten ist der Parent für die Kinder
                 while cursor.goto_next_sibling():
                     traverse(cursor, current_id)
                 cursor.goto_parent()
 
-        # Start der Traversierung (der Root-Node hat keinen Parent, also None)
+        # Start der Traversierung (None, weil der Wurzelknoten keinen Elternknoten hat)
         traverse(cursor, None)
 
     return {"nodes": nodes, "edges": edges}
