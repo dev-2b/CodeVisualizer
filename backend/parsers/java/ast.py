@@ -21,26 +21,36 @@ def extract(files: list) -> dict:
             nonlocal node_counter  # Erlaubt den Zugriff auf den Zähler außerhalb der Funktion --> Tipp von KI kannte ich nicht, aber es ist notwendig, damit die IDs eindeutig bleiben
             
             node = cursor.node
+            # --- NEU: Koordinaten auslesen und für Monaco anpassen (+1) ---
+            start_point = node.start_point
+            end_point = node.end_point
+            
+            loc = {
+                "startLineNumber": start_point[0] + 1,
+                "startColumn": start_point[1] + 1,
+                "endLineNumber": end_point[0] + 1,
+                "endColumn": end_point[1] + 1
+            }
+            # -------------------------------------------------------------
             current_id = node_counter
             node_counter += 1
             
             # Das Label für vis.js zusammenbauen
             label = node.type
-            
-            
             if node.child_count == 0:
                 text = node.text.decode('utf8')
                 # Verhindert, dass Zeilenumbrüche das Layout zerschießen
                 text = text.replace('\n', '\\n').replace('\r', '')
                 
-                # Wenn Typ und Text identisch sind (bei anonymen Knoten wie "{"), eigen wir es nicht doppelt an
+                # Wenn Typ und Text identisch sind (bei anonymen Knoten wie "{"), hängen wir es nicht doppelt an
                 if label != text:
                     label += f"\n({text})"
 
             # Knoten hinzufügen
             nodes.append({
                 "id": current_id,
-                "label": label
+                "label": label,
+                "loc": loc
             })
             
             # Kante zum Elternknoten hinzufügen (außer beim allerersten Wurzelknoten)

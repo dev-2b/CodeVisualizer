@@ -125,5 +125,37 @@ function drawGraph(graphData) {
     };
 
     // 4. Graph initialisieren
-    new vis.Network(container, data, options);
+    const network = new vis.Network(container, data, options);
+
+    // --- NEU: Klick-Event für die Synchronisation ---
+    network.on("click", function (params) {
+        // Prüfen, ob wirklich ein Knoten (und nicht nur der leere Hintergrund) geklickt wurde
+        if (params.nodes.length > 0) {
+            const nodeId = params.nodes[0];
+
+            // Den passenden Knoten in unseren Backend-Daten suchen
+            const clickedNode = data.nodes.find(n => n.id === nodeId);
+
+            if (clickedNode && clickedNode.loc) {
+                const loc = clickedNode.loc;
+
+                // Monaco anweisen, den Bereich zu markieren
+                windowEditor.setSelection({
+                    startLineNumber: loc.startLineNumber,
+                    startColumn: loc.startColumn,
+                    endLineNumber: loc.endLineNumber,
+                    endColumn: loc.endColumn
+                });
+
+                // Optional, aber sehr nützlich: Scrollt den Editor automatisch 
+                // zu der markierten Stelle, falls sie gerade nicht im Bild ist
+                windowEditor.revealRangeInCenter({
+                    startLineNumber: loc.startLineNumber,
+                    startColumn: loc.startColumn,
+                    endLineNumber: loc.endLineNumber,
+                    endColumn: loc.endColumn
+                });
+            }
+        }
+    });
 }
