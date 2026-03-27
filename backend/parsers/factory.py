@@ -1,4 +1,5 @@
 from parsers.java import ast as java_ast
+from parsers.java import inheritance as java_inheritance
 # Hier kommen später Imports für Python oder andere Module hin
 
 def get_visualisation(files: list, vis_type: str) -> dict:
@@ -19,7 +20,10 @@ def get_visualisation(files: list, vis_type: str) -> dict:
             
     # Platzhalter für spätere Typen
     elif vis_type == "inheritance":
-        raise ValueError("Inheritance-Visualisierung ist noch nicht implementiert.")
+        if lang == "java":
+            return java_inheritance.extract(files)
+        else:
+            raise ValueError(f"Sprache '{lang}' wird für Inheritance-Visualisierung noch nicht unterstützt.")
     elif vis_type == "dataflow":
         raise ValueError("Dataflow-Visualisierung ist noch nicht implementiert.")
     else:
