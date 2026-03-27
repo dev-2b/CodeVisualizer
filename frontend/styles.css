@@ -84,3 +84,27 @@ h2 {
     /* Ein transparentes Gelb */
     border-radius: 3px;
 }
+
+/* Container für die Upload-Buttons */
+#file-controls {
+    margin-bottom: 10px;
+}
+
+/* Die Leiste für die Datei-Reiter */
+#editor-tabs {
+    display: flex;
+    background: #2d2d2d;
+    color: white;
+    overflow-x: auto;
+    font-family: sans-serif;
+    font-size: 14px;
+    min-height: 40px;
+    align-items: center;
+}
+
+/* Der Container für den Monaco-Editor */
+#editor-container {
+    width: 800px;
+    height: 600px;
+    border: 1px solid #ccc;
+}
