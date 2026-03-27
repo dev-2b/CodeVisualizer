@@ -3,7 +3,7 @@ const options = {
     layout: {
         hierarchical: {
             enabled: true,
-            direction: 'UD',       // UD = Up-Down (von oben nach unten)
+            direction: 'LR',       // UD = Up-Down (von oben nach unten)//DU = Down-Up, LR = Left-Right, RL = Right-Left
             sortMethod: 'directed' // Beachtet die Richtung der Pfeile
         }
     },

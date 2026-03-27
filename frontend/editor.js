@@ -2,14 +2,40 @@ let windowEditor;
 let currentDecorations = [];
 let fileModels = {}; // Speichert die Monaco-Models (Dateien)
 
-// 1. Monaco Initialisierung (bleibt wie sie ist)
+// 1. Monaco Initialisierung und Beispielcode
 require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' } });
 require(['vs/editor/editor.main'], function () {
     windowEditor = monaco.editor.create(document.getElementById('editor-container'), {
-        // value: 'class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}',
-        // language: 'java',
         theme: 'vs-dark'
     });
+
+    // --- Start: Automatischer Beispielcode ---
+
+    // Code für die erste Datei (Basisklasse und Interface)
+    const code1 = `interface Drawable {
+    void draw();
+}
+
+class Shape {
+    protected int x;
+    protected int y;
+}`;
+
+    // Code für die zweite Datei (Kindklasse, die erbt und implementiert)
+    const code2 = `class Circle extends Shape implements Drawable {
+    private int radius;
+    
+    @Override
+    public void draw() {
+        System.out.println("Zeichne Kreis");
+    }
+}`;
+
+    // Die beiden Dateien als separate Tabs anlegen
+    window.addFileToEditor("Shape.java", code1);
+    window.addFileToEditor("Circle.java", code2);
+
+    // --- Ende: Automatischer Beispielcode ---
 });
 
 
@@ -28,13 +54,31 @@ window.addFileToEditor = function (filename, code) {
     tab.style.userSelect = 'none';
 
     // Beim Klick auf den Tab das Model im Editor austauschen
-    tab.onclick = () => {
-        windowEditor.setModel(model);
+    // Beim Klick auf den Tab das Model im Editor austauschen
+    tab.addEventListener('click', () => {
+        // console.log("Klick auf Tab:", filename);
 
-        // Alle Tabs etwas abdunkeln und den aktiven hervorheben
-        document.querySelectorAll('#editor-tabs div').forEach(t => t.style.background = 'transparent');
-        tab.style.background = '#1e1e1e';
-    };
+        if (!windowEditor) {
+            console.error("Fehler: windowEditor ist nicht definiert oder noch nicht geladen.");
+            return;
+        }
+
+        try {
+            windowEditor.setModel(model);
+
+            // Alle Tabs etwas abdunkeln und den aktiven hervorheben
+            document.querySelectorAll('#editor-tabs div').forEach(t => {
+                t.style.background = 'transparent';
+                t.style.borderBottom = 'none';
+            });
+            tab.style.background = '#1e1e1e';
+            tab.style.borderBottom = '2px solid #007acc'; // Optisches Feedback für den aktiven Tab
+
+            // console.log("Model erfolgreich gewechselt.");
+        } catch (error) {
+            console.error("Fehler beim Setzen des Models:", error);
+        }
+    });
 
     document.getElementById('editor-tabs').appendChild(tab);
 
